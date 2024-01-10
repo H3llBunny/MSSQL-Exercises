@@ -1,0 +1,44 @@
+CREATE DATABASE Movies;
+
+GO
+
+USE Movies;
+
+GO
+
+CREATE TABLE Directors
+(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	DirectorName VARCHAR(50) NOT NULL,
+	Notes VARCHAR(MAX) NULL
+)
+
+CREATE TABLE Genres
+(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	GenreName VARCHAR(100) NOT NULL,
+	Notes VARCHAR(MAX) NULL
+)
+
+CREATE TABLE Categories
+(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	CategoryName VARCHAR(100) NOT NULL,
+	Notes VARCHAR(MAX) NULL
+)
+
+CREATE TABLE Movies
+(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	Title NVARCHAR(200) NOT NULL,
+	DirectorId INT,
+	FOREIGN KEY (DirectorId) REFERENCES Directors(Id),
+	CopyrightYear INT NOT NULL,
+	Length INT NOT NULL,
+	GenreId INT,
+	FOREIGN KEY (GenreId) REFERENCES Genres(Id),
+	CategoryId INT,
+	FOREIGN KEY (CategoryId) REFERENCES Categories(Id),
+	Rating DECIMAL(2,1),
+	Notes VARCHAR(MAX) NULL
+)

@@ -1,0 +1,92 @@
+CREATE DATABASE Hotel;
+
+GO
+
+USE Hotel;
+
+GO
+
+CREATE TABLE Employees
+(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	FirstName VARCHAR(50) NOT NULL, 
+	LastName VARCHAR(50) NOT NULL,
+	Title VARCHAR(100) NOT NULL, 
+	Notes VARCHAR(MAX) NULL
+)
+
+CREATE TABLE Customers
+(
+	AccountNumber INT NOT NULL, 
+	FirstName VARCHAR(50) NOT NULL, 
+	LastName VARCHAR(50) NOT NULL, 
+	PhoneNumber VARCHAR(MAX) NOT NULL, 
+	EmergencyName VARCHAR(50) NOT NULL, 
+	EmergencyNumber VARCHAR(MAX) NOT NULL, 
+	Notes VARCHAR(MAX) NULL
+)
+
+CREATE TABLE RoomStatus
+(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	RoomStatus VARCHAR(50) NOT NULL,
+	Notes VARCHAR(MAX) NULL
+)
+
+CREATE TABLE RoomTypes
+(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	RoomType VARCHAR(50) NOT NULL,
+	Notes VARCHAR(MAX) NULL
+)
+
+CREATE TABLE BedTypes
+(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	BedType VARCHAR(50) NOT NULL,
+	Notes VARCHAR(MAX) NULL
+)
+
+CREATE TABLE Rooms
+(
+	RoomNumber INT PRIMARY KEY NOT NULL, 
+	RoomType INT, 
+	FOREIGN KEY (RoomType) REFERENCES RoomTypes(Id),
+	BedType INT,
+	FOREIGN KEY (BedType) REFERENCES BedTypes(Id),
+	Rate DECIMAL(10,2) NOT NULL, 
+	RoomStatus INT,
+	FOREIGN KEY (RoomStatus) REFERENCES RoomStatus(Id),
+	Notes VARCHAR(MAX) NULL
+)
+
+CREATE TABLE Payments
+(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	EmployeeId INT, 
+	FOREIGN KEY (EmployeeId) REFERENCES Employees(Id),
+	PaymentDate DATETIME NOT NULL,
+	AccountNumber INT NOT NULL,
+	FirstDateOccupied DATE NOT NULL,
+	LastDateOccupied DATE NOT NULL,
+	TotalDays INT NOT NULL,
+	AmountCharged DECIMAL(10,2) NOT NULL,
+	TaxRate DECIMAL(5,2) NOT NULL,
+	TaxAmount DECIMAL(10,2) NOT NULL,
+	PaymentTotal DECIMAL(10,2) NOT NULL,
+	Notes VARCHAR(MAX) NULL
+)
+
+CREATE TABLE Occupancies
+(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	EmployeeId INT, 
+	FOREIGN KEY (EmployeeId) REFERENCES Employees(Id),
+	DateOccupied DATE NOT NULL,
+	AccountNumber INT NOT NULL,
+	RoomNumber INT,
+	FOREIGN KEY (RoomNumber) REFERENCES Rooms(RoomNumber),
+	RateApplied DECIMAL(10,2) NOT NULL,
+	PhoneCharge DECIMAL(10,2) NOT NULL,
+	Notes VARCHAR(MAX) NULL
+)
